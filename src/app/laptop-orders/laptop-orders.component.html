@@ -1,0 +1,76 @@
+<div style="width: 100%; display:block; background-color:aquamarine;">
+  <div style="width: 100%; text-align: center; font-size:40px; font-family: serif; margin-bottom: 20px; padding-top: 20px;"> Laptops</div>
+  <button [disabled]='isConnected' style="width: 15%; margin:auto; display:block;" (click)="connectSignalR()"> Refresh Laptop List </button>
+  <table style="width: 45%; margin-left: auto; margin-right: auto; margin-top: 20px;">
+    <tr style="height: 40px">
+      <td colspan="2">
+        <input style=" width: 98%; height: 20px" placeholder="Order" [(ngModel)]="orderId" type="text" readonly>
+      </td>
+      <td>
+        <button style="width:100%; color:red; font-weight:600" [disabled]='!isConnected' (click)="deleteOrderList()"> Delete Order </button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button [disabled]='!isConnected' style="width: 100%;" (click)="createOrder()"> Create Order </button>
+      </td>
+      <td>
+        <div style="display: flex; justify-content: center;">
+          <label>
+            Add to Group
+            <input type="checkbox" [disabled]='!isConnected' (change)="addToGroup()" id="addToGroup" name="addToGroup" value="Value">
+          </label>
+        </div>
+      </td>
+      <td>
+        <button [disabled]='!isConnected' style="width:100%;" (click)="getOrderList()"> Order List</button>
+      </td>
+    </tr>
+  </table>
+  @if (orderListVisible) {
+  <ul>
+    <li *ngFor="let order of orderList; index as i">
+      <button style="margin-right: 5px" type="button" (click)="onSelect(order.orderId)">Select</button>
+      <span>{{order.orderId}}</span>
+    </li>
+  </ul>
+  }
+  <br />
+</div>
+
+
+<div style="width: 100%;height: 100%;display: flex;flex-wrap: wrap;gap: 5px;padding-bottom: 30px;">
+  @for (laptop of laptopList; track laptop.laptopId; let idx = $index ) {
+  <div style="width: 30%;margin: 20px 10px 0px 30px;text-align: center;border: black 2px solid;border-radius: 20px;">
+    <img src="assets/images/{{laptop.imageRef}}" [alt]="laptop.name">
+    <p>
+      <i>{{ laptop.name }}</i>
+    </p>
+    <div style="margin: 10px auto 10px">
+      <input id="input{{laptop.laptopId}}" (click)="addRemoveLaptop(laptop.laptopId)"
+             style="width:10%; text-align:center; margin-right: 10px;" placeholder="Qty" type="number" min="0">
+      <label>
+        Select
+        <input type="checkbox" (change)="addRemoveLaptop(laptop.laptopId)" id="check{{laptop.laptopId}}" name="checkBox" value="Value">
+      </label>
+    </div>
+  </div>
+  }
+</div>
+<div style="width: 100%; display:block; background-color:aquamarine; padding-top: 20px; padding-bottom: 20px;">
+  <button [disabled]='!isConnected' style="margin:0px auto 20px; display:block;" (click)="sendOrder()"> Send Order </button>
+  <div style="width: 100%; text-align: center; font-size:40px; font-family: serif;">Orders</div>
+  <div style="width: 100%; text-align: center; font-size:40px; font-family: serif;">
+    <select id="laptopFilter" [disabled]="isFilterDisabled" (change)="selectFilter()">
+      <option>All</option>
+      <option>Asus</option>
+      <option>Core</option>
+      <option>HP</option>
+      <option>Lenovo</option>
+      <option>Office</option>
+    </select>
+  </div>
+  <div style="margin:30px 30px 40px 40px; display:block;">
+    <div id="orderTable"></div>
+  </div>
+</div>
